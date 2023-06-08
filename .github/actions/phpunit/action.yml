@@ -8,7 +8,7 @@ runs:
       id: phpunit-cache
       with:
         path: .phpunit.cache
-        key: ${{ runner.os }}-modules-${{ hashFiles('composer.lock', 'phpstan.neon' }}
+        key: ${{ runner.os }}-modules-${{ hashFiles('composer.lock', 'phpstan.neon') }}
     - name: PHPUnit
       id: phpunit
       uses: ./.github/actions/php
