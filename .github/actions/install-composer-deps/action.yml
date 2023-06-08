@@ -20,7 +20,7 @@ runs:
       uses: ./.github/actions/php
       with:
         command: composer
-        args: install
+        args: install --no-dev
       if: steps.composer-cache.output.cache-hit != 'true' && inputs.dev != 'true'
 
     - name: Composer Dev Install
@@ -28,5 +28,5 @@ runs:
       uses: ./.github/actions/php
       with:
         command: composer
-        args: install --no-dev
+        args: install
       if: steps.composer-cache.output.cache-hit != 'true' && inputs.dev != 'false'
