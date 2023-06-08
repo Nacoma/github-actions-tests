@@ -15,6 +15,5 @@ runs:
       id: php
       uses: docker://nanacoma/php-test:6.0.1
       with:
-        entrypoint: ${{ inputs.entrypoint }}
+        entrypoint: ${{ inputs.command }}
         args: ${{ inputs.args }}
-        options: -v ${{ github.workspace }}:/app

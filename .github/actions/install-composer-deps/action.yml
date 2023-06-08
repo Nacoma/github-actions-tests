@@ -19,6 +19,6 @@ runs:
       id: composer-install
       uses: ./.github/actions/php
       with:
-        entrypoint: composer
+        command: composer
         args: install
       if: steps.composer-cache.output.cache-hit != 'true'
