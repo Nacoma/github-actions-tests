@@ -19,7 +19,6 @@ runs:
       id: composer-install
       uses: docker://nanacoma/php-test:6.0.1
       with:
-        entrypoint: ""
-        options: -v ${{ github.workspace }}:/app
+        options: -v ${{ github.workspace }}:/app --entrypoint=""
         run: composer install
 #      if: steps.composer-cache.output.cache-hit != 'true'
