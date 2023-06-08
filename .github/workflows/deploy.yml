@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Set output
         id: vars
-        run: echo "tag=${${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+        run: echo "tag=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
 
       - uses: actions/checkout@v3
 
