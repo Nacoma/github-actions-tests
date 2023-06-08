@@ -21,4 +21,4 @@ runs:
       with:
         entrypoint: composer
         args: install
-#      ifu steps.composer-cache.output.cache-hit != 'true'
+      if: steps.composer-cache.output.cache-hit != 'true'

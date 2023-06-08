@@ -11,5 +11,6 @@ runs:
         key: ${{ runner.os }}-modules-${{ hashFiles('composer.lock', 'phpstan.neon' }}
     - name: PHPStan
       id: phpstan
-      run: ./vendor/bin/phpstan analyze
-      shell: sh
+      uses: ./.github/actions/php
+      with:
+        command: ./vendor/bin/phpstan

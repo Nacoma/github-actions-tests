@@ -4,11 +4,13 @@ on:
   push:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/install-composer-deps
+      - uses: ./.github/actions/phpunit
+      - uses: ./.github/actions/phpstan
 
 
 

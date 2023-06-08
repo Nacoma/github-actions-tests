@@ -11,5 +11,6 @@ runs:
         key: ${{ runner.os }}-modules-${{ hashFiles('composer.lock', 'phpunit.neon' }}
     - name: PHPUnit
       id: phpunit
-      run: ./vendor/bin/phpunit analyze
-      shell: sh
+      uses: ./.github/actions/php
+      with:
+        command: ./vendor/bin/phpunit
