@@ -9,10 +9,12 @@ inputs:
     required: false
     default: ""
 runs:
-  using: docker
-  pre-entrypoint: "cd /github/workflow"
-  image: nanacoma/php-test:6.0.1
-  entrypoint: ${{ inputs.command }}
-
-  args:
-    - ${{ inputs.args }}
+  using: composite
+  steps:
+    - name: php
+      id: php
+      uses: docker://nanacoma/php-test:6.0.1
+      with:
+        entrypoint: ${{ inputs.entrypoint }}
+        args: ${{ inputs.args }}
+        options: -v ${{ github.workspace }}:/app
