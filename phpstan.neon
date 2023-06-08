@@ -1,0 +1,19 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+    reportUnmatchedIgnoredErrors: false
+    tmpDir: .phpstan
+
+    paths:
+        - app/
+        - config/
+
+    # Level 9 is the highest level
+    level: 7
+
+#    ignoreErrors:
+#        - '#PHPDoc tag @var#'
+#
+
+    checkMissingIterableValueType: false

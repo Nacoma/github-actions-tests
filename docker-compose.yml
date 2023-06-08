@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  app:
+    image: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    hostname: test-app
+    volumes:
+      - .:/app
+  proxy:
+    image: nginx:alpine
+    restart: unless-stopped
+    tty: true
+    container_name: proxy
+    hostname: proxy
+    ports:
+      - '9005:9005'
+    depends_on:
+      - app
+    volumes:
+      - .:/app
+      - .docker/nginx/conf.d/:/etc/nginx/conf.d/
+    links:
+      - app:app

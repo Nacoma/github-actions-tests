@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+set -e
+
+echo "Starting deployment."
+
+export ELASTIC_APM_ENABLED=false
+export ELASTIC_APM_SERVICE_NAME=www
+
+if [ "x${ELASTIC_APM_SERVER_URL}" == "x" ];
+then
+  export ELASTIC_APM_SERVER_URL="http://$(/sbin/ip route|awk '/default/ { print $3 }'):8200"
+fi
+
+if [ "x${APP_ENV}" == "xlocal" ] || [ "x${APP_ENV}" == "x" ];
+then
+  echo "Clearing cache"
+  php artisan optimize:clear
+else
+  echo "Caching laravel elements"
+  php artisan config:cache
+  php artisan route:cache
+  php artisan view:cache
+  # su -c '/usr/local/bin/php /app/artisan optimize' -s /bin/sh www-data # deprecated, doesn't run view:cache and produced a bad route:cache
+fi
+
+echo "Setting up storage for laravel"
+
+php artisan storage:link
+
+exec php-fpm -R
