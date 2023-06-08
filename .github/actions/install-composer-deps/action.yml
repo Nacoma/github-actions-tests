@@ -12,8 +12,15 @@ runs:
       id: composer-cache
       uses: actions/cache@v3
       with:
+        path: /root/.composer/cache
+        key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+
+    - name: Vendor Cache
+      id: vendor-cache
+      uses: actions/cache@v3
+      with:
         path: vendor
-        key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}-dev-${{ inputs.dev }}
+        key: ${{ runner.os }}-vendor-${{ hashFiles('composer.lock') }}-dev-${{ inputs.dev }}
 
     - name: Composer Install
       id: composer-install

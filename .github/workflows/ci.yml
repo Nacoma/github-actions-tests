@@ -4,7 +4,7 @@ on:
   push:
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -12,10 +12,31 @@ jobs:
         name: Composer Install
         with:
           dev: true
+
+  phpunit:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/install-composer-deps
+        with:
+          dev: true
+        name: Composer Install
       - uses: ./.github/actions/phpunit
         name: PHPUnit
+
+  phpstan:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/install-composer-deps
+        with:
+          dev: true
+        name: Composer Install
       - uses: ./.github/actions/phpstan
         name: PHPStan
+
 
 
 
