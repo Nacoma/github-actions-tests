@@ -17,7 +17,6 @@ runs:
 
     - name: Composer Install
       id: composer-install
-      uses: docker://nanacoma/php-test
-      with:
-        entrypoint: composer install
       if: steps.composer-cache.output.cache-hit != 'true'
+      run: composer install
+      shell: sh
