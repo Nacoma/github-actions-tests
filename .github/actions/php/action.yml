@@ -17,7 +17,6 @@ runs:
       with:
         options: -v ${{ github.workspace }}:/app
         entrypoint: ${{ input.command }}
-        args:
-          - ${{ github.event.input.args }}
+        args: ${{ github.event.input.args }}
 
 
