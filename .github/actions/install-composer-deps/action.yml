@@ -15,6 +15,11 @@ runs:
         path: vendor
         key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
 
+    - name: Composer Version
+      id: composer-version
+      run: composer --version
+      shell: sh
+
     - name: Composer Install
       id: composer-install
       if: steps

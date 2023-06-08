@@ -6,13 +6,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-#    container:
-#      image: nanacoma/php-test
-#      volumes:
-#        - ${{ github.workspace }}:/app
+    container:
+      image: nanacoma/php-test
+      volumes:
+        - ${{ github.workspace }}:/app
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/install-composer-deps
+      - uses: /app/.github/actions/install-composer-deps
 
 
 
