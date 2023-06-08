@@ -1,0 +1,15 @@
+name: PHPUnit
+description: Run PHPUnit on the code base.
+runs:
+  using: composite
+  steps:
+    - uses: actions/cache@v3
+      name: PHPUnit Cache
+      id: phpunit-cache
+      with:
+        path: .phpunit.cache
+        key: ${{ runner.os }}-modules-${{ hashFiles('composer.lock', 'phpunit.neon' }}
+    - name: PHPUnit
+      id: phpunit
+      run: ./vendor/bin/phpunit analyze
+      shell: sh

@@ -1,0 +1,8 @@
+name: Build Assets
+description: Build frontend assets
+runs:
+  using: composite
+  steps:
+    - name: Build Assets
+      run: npm run prod
+      shell: bash

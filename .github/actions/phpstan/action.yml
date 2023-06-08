@@ -1,0 +1,15 @@
+name: PHPStan
+description: Run PHPStan on the code base.
+runs:
+  using: composite
+  steps:
+    - uses: actions/cache@v3
+      name: PHPStan Cache
+      id: phpstan-cache
+      with:
+        path: .phpstan
+        key: ${{ runner.os }}-modules-${{ hashFiles('composer.lock', 'phpstan.neon' }}
+    - name: PHPStan
+      id: phpstan
+      run: ./vendor/bin/phpstan analyze
+      shell: sh

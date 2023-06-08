@@ -1,0 +1,19 @@
+name: 'Install NPM Dependencies'
+description: Install and cache NPM dependencies
+runs:
+  using: docker
+  image: Dockerfile
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16.2.0
+    - name: Cache NPM dependencies
+      id: npm-cache
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-modules-${{ hashFiles('package-lock.json') }}
+    - name: Install NPM dependencies
+      if: steps.npm-cache.outputs.cache-hit != 'true'
+      run: npm ci
+      shell: bash
