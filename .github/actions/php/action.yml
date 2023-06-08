@@ -13,7 +13,7 @@ runs:
   pre-entrypoint: "cd /github/workflow"
   image: nanacoma/php-test:6.0.1
 #    options: -v ${{ github.workspace }}:/app
-  entrypoint: ${{ inputs.command }}
+  entrypoint: ${{ github.event.inputs.command }}
 
   args:
-    - ${{ inputs.args }}
+    - ${{ github.event.inputs.args }}
