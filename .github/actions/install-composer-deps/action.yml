@@ -13,7 +13,7 @@ runs:
       uses: actions/cache@v3
       with:
         path: vendor
-        key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}-dev-${{ inputs.dev }}
 
     - name: Composer Install
       id: composer-install
@@ -21,4 +21,12 @@ runs:
       with:
         command: composer
         args: install
-      if: steps.composer-cache.output.cache-hit != 'true'
+      if: steps.composer-cache.output.cache-hit != 'true' && inputs.dev != 'true'
+
+    - name: Composer Dev Install
+      id: composer-install-dev
+      uses: ./.github/actions/php
+      with:
+        command: composer
+        args: install --no-dev
+      if: steps.composer-cache.output.cache-hit != 'true' && inputs.dev != 'false'
