@@ -9,8 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/install-composer-deps
+        name: Composer Install
       - uses: ./.github/actions/phpunit
+        name: PHPUnit
       - uses: ./.github/actions/phpstan
+        name: PHPStan
 
 
 
