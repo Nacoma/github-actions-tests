@@ -8,7 +8,7 @@ runs:
       id: phpstan-cache
       with:
         path: .phpstan
-        key: ${{ runner.os }}-modules-${{ hashFiles('composer.lock', 'phpstan.neon' }}
+        key: ${{ runner.os }}-modules-${{ hashFiles('composer.lock', 'phpstan.neon') }}
     - name: PHPStan
       id: phpstan
       uses: ./.github/actions/php
