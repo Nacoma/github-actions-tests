@@ -1,0 +1,19 @@
+name: PHP
+description: Run php (composer, phpunit, etc) actions in the container environment.
+inputs:
+  command:
+    description: The command you want to run (composer, ./vendor/bin/phpunit)
+    required: true
+  args:
+    description: Optional arguments passed to the command.
+    required: false
+    default: ""
+runs:
+  using: docker
+  pre-entrypoint: "cd /github/workflow"
+  image: nanacoma/php-test:6.0.1
+#    options: -v ${{ github.workspace }}:/app
+  entrypoint: ${{ inputs.command }}
+
+  args:
+    - ${{ inputs.args }}

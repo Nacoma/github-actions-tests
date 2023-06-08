@@ -17,9 +17,8 @@ runs:
 
     - name: Composer Install
       id: composer-install
-      uses: docker://nanacoma/php-test:6.0.1
+      uses: ./.github/actions/php
       with:
-        options: -v ${{ github.workspace }}:/app
         entrypoint: composer
         args: install
 #      if: steps.composer-cache.output.cache-hit != 'true'
