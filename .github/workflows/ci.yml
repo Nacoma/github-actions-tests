@@ -5,15 +5,17 @@ on:
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/install-composer-deps
-        name: Composer Install
+        name: Run Composer Install
         with:
           dev: true
 
   phpunit:
+    name: PHPUnit
     needs: [build]
     runs-on: ubuntu-latest
     steps:
@@ -23,9 +25,10 @@ jobs:
           dev: true
         name: Composer Install
       - uses: ./.github/actions/phpunit
-        name: PHPUnit
+        name: Run PHPUnit
 
   phpstan:
+    name: PHPStan
     needs: [build]
     runs-on: ubuntu-latest
     steps:
@@ -35,7 +38,7 @@ jobs:
           dev: true
         name: Composer Install
       - uses: ./.github/actions/phpstan
-        name: PHPStan
+        name: Run PHPStan
 
 
 
