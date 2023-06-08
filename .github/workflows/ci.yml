@@ -9,10 +9,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/install-composer-deps
-        with:
-          image: nanacoma/php-test:6.0.1
-          options: -v ${{ github.workspace }}:/app
-
 
 
 
