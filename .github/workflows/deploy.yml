@@ -11,7 +11,7 @@ jobs:
           fetch-depth: '0'
       - name: Version bump
         id: version-bump
-        uses: anothrNick/github-tag-action@1.36.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: true
+        uses: paulhatch/semantic-version@v5.0.2
+        with:
+          tag_prefix: "v"
+          namespace: "marketing"
