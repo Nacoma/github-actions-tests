@@ -18,7 +18,7 @@ runs:
         cp .deploy/production/nginx/conf.d/nginx.conf deployment/etc/nginx/conf.d/
         cp .deploy/production/Dockerrun.aws.json deployment/
         cd deployment
+        mkdir zip
         sed -i "s~<API>~${{ inputs.container }}~" Dockerrun.aws.json
         sed -i "s~<SENTRY_RELEASE>~${{ inputs.version }}~" Dockerrun.aws.json
-        
         zip -r target/www-${VERSION}.zip Dockerrun.aws.json etc 
