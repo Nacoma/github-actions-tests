@@ -6,6 +6,7 @@ on:
     branches:
       - staging
       - develop
+      - main
   workflow_dispatch:
     inputs:
       environment:
@@ -53,6 +54,8 @@ jobs:
       name: ${{ needs.environment.outputs.name }}
     steps:
       - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/install-composer-deps
 
       - name: Get application version
         id: version

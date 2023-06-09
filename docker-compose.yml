@@ -2,11 +2,10 @@ version: '3.7'
 
 services:
   app:
-    image: what
+    image: 121952031047.dkr.ecr.us-east-1.amazonaws.com/deploy-test:beta-25
     container_name: app
     hostname: test-app
     environment:
-      APP_VERSION: local
       APP_KEY: "base64:YS/ok7lBEiTQhUvUMSYSsRev5YssnMOwSlwjgRAmqXU="
   proxy:
     image: nginx:alpine
