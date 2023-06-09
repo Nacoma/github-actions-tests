@@ -2,10 +2,10 @@ version: '3.7'
 
 services:
   app:
-    image: app
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: nanacoma/app-test:staging-18
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
     container_name: app
     hostname: test-app
     volumes:

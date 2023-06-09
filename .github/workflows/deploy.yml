@@ -75,5 +75,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: nanacoma/app-test:${{ needs.environment.outputs.name }}-${{ steps.version.outputs.version }}
-          build-args: |
+          secrets: |
             "APP_VERSION=${{ steps.version.outputs.version }}"
