@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+set -e
+
+echo "Starting deployment."
+
+export ELASTIC_APM_ENABLED=false
+export ELASTIC_APM_SERVICE_NAME=www
+
+if [ "x${ELASTIC_APM_SERVER_URL}" == "x" ];
+then
+  export ELASTIC_APM_SERVER_URL="http://$(/sbin/ip route|awk '/default/ { print $3 }'):8200"
+fi
+
+php artisan optimize
+php artisan route:cache
+php artisan storage:link
+
+exec php-fpm

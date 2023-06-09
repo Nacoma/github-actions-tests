@@ -2,14 +2,12 @@ version: '3.7'
 
 services:
   app:
-    image: nanacoma/app-test:staging-20
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
+    image: what
     container_name: app
     hostname: test-app
-    volumes:
-      - .:/app
+    environment:
+      APP_VERSION: local
+      APP_KEY: "base64:YS/ok7lBEiTQhUvUMSYSsRev5YssnMOwSlwjgRAmqXU="
   proxy:
     image: nginx:alpine
     restart: unless-stopped
@@ -22,6 +20,6 @@ services:
       - app
     volumes:
       - .:/app
-      - .docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - .deploy/development/nginx/conf.d/:/etc/nginx/conf.d/
     links:
       - app:app
