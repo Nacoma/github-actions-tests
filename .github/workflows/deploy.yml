@@ -28,9 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     if: (github.event.workflow_run.event == 'push' && github.event.workflow_run.conclusion == 'success') || (github.event_name == 'workflow_dispatch' && inputs.environment)
     outputs:
-      name: ${{ steps.name.outputs.name }}
+      name: ${{ steps.environment.outputs.name }}
     steps:
-      - name: Environment Name
+      - name: Environment name
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             environment="${{ inputs.environment }}"
@@ -40,6 +40,8 @@ jobs:
             environment="dev"
           fi
           echo "name=${environment}" >> $GITHUB_OUTPUT
+        id: environment
+        shell: bash
 
   deploy:
     needs: [environment]
