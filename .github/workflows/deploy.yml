@@ -65,6 +65,16 @@ jobs:
         run: echo "version=${{ github.run_number }}" >> $GITHUB_OUTPUT
         shell: sh
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::121952031047:role/github-deploy-php
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
       - name: Get Container Url
         id: get-container-url
         env:
@@ -77,16 +87,6 @@ jobs:
         with:
           container: ${{ steps.get-container-url.outputs.container }}
           version: ${{ steps.version.outputs.version }}
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-region: us-east-1
-          role-to-assume: arn:aws:iam::121952031047:role/github-deploy-php
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build, tag, and push container image to ECR
         env:
