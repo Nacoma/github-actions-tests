@@ -35,9 +35,9 @@ jobs:
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             environment="${{ inputs.environment }}"
           elif [[ "${{ github.event.workflow_run.head_branch }}" == "staging" ]]; then
-            environment="stage"
+            environment="staging"
           else
-            environment="dev"
+            environment="develop"
           fi
           echo "name=${environment}" >> $GITHUB_OUTPUT
         id: environment
@@ -73,7 +73,7 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: deploy-test
-          IMAGE_TAG:  ${{ steps.version.outputs.version }}
+          IMAGE_TAG:  ${{ steps.environment.outputs.environment }}-${{ steps.version.outputs.version }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
