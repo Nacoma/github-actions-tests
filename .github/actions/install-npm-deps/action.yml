@@ -1,8 +1,7 @@
 name: 'Install NPM Dependencies'
 description: Install and cache NPM dependencies
 runs:
-  using: docker
-  image: Dockerfile
+  using: composite
   steps:
     - uses: actions/setup-node@v3
       with:

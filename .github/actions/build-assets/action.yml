@@ -3,6 +3,14 @@ description: Build frontend assets
 runs:
   using: composite
   steps:
+    - name: Cache Assets Build
+      id: cache-assets-build
+      uses: actions/cache@v3
+      with:
+        path: public/build
+        key: ${{ runner.os }}-modules-${{ hashFiles('package-lock.json', 'resources/js', 'resources/css') }}
+
     - name: Build Assets
-      run: npm run prod
+      run: vite build
+      if: steps.cache-assets-build-outputs.cache-hit != 'true'
       shell: bash
