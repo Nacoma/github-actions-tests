@@ -1,7 +1,7 @@
 name: Build EB Release Candidate
 description: Build EB Release Candidate
 inputs:
-  environment:
+  container:
     description: The environment name
     required: true
   version:
