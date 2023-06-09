@@ -1,0 +1,84 @@
+
+{
+  "AWSEBDockerrunVersion": 2,
+  "volumes": [
+    {
+      "name": "app"
+    },
+    {
+      "name": "nginx-proxy-conf",
+      "host": {
+        "sourcePath": "/var/app/current/.deploy/production/nginx/conf.d"
+      }
+    },
+    {
+      "name": "ebs",
+      "host": {
+        "sourcePath": "/opt/elasticbeanstalk"
+      }
+    }
+  ],
+
+  "containerDefinitions": [
+    {
+      "name": "app",
+      "image": "<API>",
+      "essential": true,
+      "memoryReservation": 256,
+      "mountPoints": [
+        {
+          "sourceVolume": "app",
+          "containerPath": "/app"
+        },
+        {
+          "sourceVolume": "ebs",
+          "containerPath": "/opt/elasticbeanstalk"
+        },
+        {
+          "sourceVolume": "awseb-logs-app",
+          "containerPath": "/app/storage/logs"
+        }
+      ],
+      "environment": [
+        {
+          "name": "SENTRY_RELEASE",
+          "value": "<SENTRY_RELEASE>"
+        },
+        {
+          "name": "ELASTIC_APM_TRANSACTION_MAX_SPANS",
+          "value": 1000
+        }
+      ]
+    },
+    {
+      "name": "nginx-proxy",
+      "image": "nginx",
+      "essential": true,
+      "memoryReservation": 256,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": [
+        "app"
+      ],
+      "volumesFrom": [
+        {
+          "sourceContainer": "app"
+        }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "nginx-proxy-conf",
+          "containerPath": "/etc/nginx/conf.d"
+        },
+        {
+          "sourceVolume": "awseb-logs-nginx-proxy",
+          "containerPath": "/var/log/nginx"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+name: Build EB Release Candidate
+description: Build EB Release Candidate
+inputs:
+  environment:
+    description: The environment name
+    required: true
+  version:
+    description: The application version
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Build Candidate
+      id: build-candidate
+      shell: bash
+      run: |
+        mkdir -p deployment/etc/nginx/conf.d/
+        cp .deploy/production/nginx/conf.d/app.conf deployment/etc/nginx/conf.d/
+        cp .deploy/production/Dockerrun.aws.json deployment/
+        cd deployment
+        sed -i "s~<API>~${{ inputs.container }}~" Dockerrun.aws.json
+        sed -i "s~<SENTRY_RELEASE>~${{ inputs.version }}~" Dockerrun.aws.json
+        
+        zip -r target/www-${VERSION}.zip Dockerrun.aws.json etc 

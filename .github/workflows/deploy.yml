@@ -65,6 +65,19 @@ jobs:
         run: echo "version=${{ github.run_number }}" >> $GITHUB_OUTPUT
         shell: sh
 
+      - name: Get Container Url
+        id: get-container-url
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: deploy-test
+          IMAGE_TAG:  ${{ needs.environment.outputs.name }}-${{ steps.version.outputs.version }}
+        run: echo "container=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - uses: ./.github/actions/build-eb-release-candidate
+        with:
+          container: ${{ steps.get-container-url.outputs.container }}
+          version: ${{ steps.version.outputs.version }}
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -81,5 +94,5 @@ jobs:
           REPOSITORY: deploy-test
           IMAGE_TAG:  ${{ needs.environment.outputs.name }}-${{ steps.version.outputs.version }}
         run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker build -t ${{ steps.get-container-url.outputs.container }} .
+          docker push ${{ steps.get-container-url.outputs.container }}
