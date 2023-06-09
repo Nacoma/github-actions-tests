@@ -15,7 +15,7 @@ runs:
       shell: bash
       run: |
         mkdir -p deployment/etc/nginx/conf.d/
-        cp .deploy/production/nginx/conf.d/app.conf deployment/etc/nginx/conf.d/
+        cp .deploy/production/nginx/conf.d/nginx.conf deployment/etc/nginx/conf.d/
         cp .deploy/production/Dockerrun.aws.json deployment/
         cd deployment
         sed -i "s~<API>~${{ inputs.container }}~" Dockerrun.aws.json
