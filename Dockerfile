@@ -5,4 +5,6 @@ COPY .docker/php/php-fpm.conf /usr/local/etc/php-fpm.d/zzz-php-fpm.conf
 
 COPY . /app
 
+ENV APP_VERSION ${APP_VERSION}
+
 CMD ["entrypoint"]

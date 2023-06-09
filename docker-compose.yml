@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   app:
-    image: nanacoma/app-test:staging-18
+    image: nanacoma/app-test:beta-19
 #    build:
 #      context: .
 #      dockerfile: Dockerfile
