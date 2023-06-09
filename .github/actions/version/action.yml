@@ -1,0 +1,12 @@
+name: Version
+description: Get the version number
+outputs:
+  version:
+    description: The version number
+    value: ${{ steps.version.outputs.version }}
+runs:
+  using: composite
+  steps:
+    - id: version
+      run: echo "version=${{ github.run_number}}" >> $GITHUB_OUTPUT
+      shell: sh

@@ -1,18 +1,57 @@
 name: CI
 on:
-  push:
-    tags:
-      - 'v*.*.*'
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches:
+      - staging
+      - develop
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Choose environment
+        required: true
+        default: staging
+        type: choice
+        options:
+          - develop
+          - staging
+          - beta
+          - production
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: false
 
 jobs:
-  version:
+  environment:
     runs-on: ubuntu-latest
+    if: (github.event.workflow_run.event == 'push' && github.event.workflow_run.conclusion == 'success') || (github.event_name == 'workflow_dispatch' && inputs.environment)
+    outputs:
+      name: ${{ steps.name.outputs.name }}
     steps:
-      - name: Set output
-        id: vars
-        run: echo "tag=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+      - name: Environment Name
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            environment="${{ inputs.environment }}"
+          elif [[ "${{ github.event.workflow_run.head_branch }}" == "staging" ]]; then
+            environment="stage"
+          else
+            environment="dev"
+          fi
+          echo "name=${environment}" >> $GITHUB_OUTPUT
 
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ needs.environment.outputs.name }}
+    steps:
       - uses: actions/checkout@v3
+
+      - name: Get application version
+        id: version
+        run: echo "version=${{ github.run_number }}" >> $GITHUB_OUTPUT
+        shell: sh
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -32,6 +71,6 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: nanacoma/app-test:${{ steps.vars.outputs.tag }}
+          tags: nanacoma/app-test:${{ needs.environment.outputs.name }}-${{ steps.version.outputs.version }}
           build-args: |
-            "APP_ENV=${{ steps.vars.outputs.tag }}"
+            "APP_VERSION=${{ steps.version.outputs.version }}"
