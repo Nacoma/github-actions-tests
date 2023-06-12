@@ -1,0 +1,35 @@
+name: Preload PHP Container
+description: Loads the ECR PHP container and caches it.
+runs:
+  using: composite
+  steps:
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-region: us-east-1
+        role-to-assume: arn:aws:iam::121952031047:role/github-deploy-php
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Restore PHP Image
+      id: restore-php-image
+      uses: actions/cache@v3
+      with:
+        path: ci/cache/docker/800-php
+        key: cache-php-container-${{ hashFiles('./deploy/production/Dockerfile') }}
+
+    - name: Fetch PHP Image
+      id: fetch-php-image
+      if: steps.restore-php-image.outputs.cache-hit != 'true'
+      run: |
+        docker pull 121952031047.dkr.ecr.us-east-1.amazonaws.com/800-php:8.2-fpm
+        mkdir -p ci/cache/docker/php
+        docker image save 800-php:8.2-fpm --output ./ci/cache/docker/php/800-php.tar
+      shell: bash
+
+    - name: Load PHP Image
+      id: load-php-image
+      run: docker image load --input ./ci/cache/docker/php/800-php.tar
+      shell: bash

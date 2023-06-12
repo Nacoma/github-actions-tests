@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/preload-php-container
+
       - uses: ./.github/actions/install-composer-deps
         name: Run Composer Install
         with:
@@ -21,15 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-region: us-east-1
-          role-to-assume: arn:aws:iam::121952031047:role/github-deploy-php
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+      - uses: ./.github/actions/preload-php-container
 
       - uses: ./.github/actions/install-composer-deps
         with:
@@ -44,17 +39,9 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-region: us-east-1
-          role-to-assume: arn:aws:iam::121952031047:role/github-deploy-php
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
       - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/preload-php-container
 
       - uses: ./.github/actions/install-composer-deps
         with:
