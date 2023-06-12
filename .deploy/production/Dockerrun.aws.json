@@ -8,7 +8,7 @@
     {
       "name": "nginx-proxy-conf",
       "host": {
-        "sourcePath": "/var/app/current/.deploy/production/nginx/conf.d"
+        "sourcePath": "/var/app/current/etc/nginx/conf.d"
       }
     },
     {
