@@ -107,6 +107,6 @@ jobs:
           application_name: deploy-test
           environment_name: Deploy-test-env
           version_label: ${{ steps.version.outputs.version }}
-          deployment_package: target/www-${{ steps.version.outputs.version }}.zip
+          deployment_package: deployment/target/www-${{ steps.version.outputs.version }}.zip
           existing_bucket_name: 800-test
           region: us-east-1
