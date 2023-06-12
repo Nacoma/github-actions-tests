@@ -26,7 +26,7 @@ runs:
       run: |
         docker pull 121952031047.dkr.ecr.us-east-1.amazonaws.com/800-php:8.2-fpm
         mkdir -p ci/cache/docker/php
-        docker image save 800-php:8.2-fpm --output ./ci/cache/docker/php/800-php.tar
+        docker image save 121952031047.dkr.ecr.us-east-1.amazonaws.com/800-php:8.2-fpm --output ./ci/cache/docker/php/800-php.tar
       shell: bash
 
     - name: Load PHP Image
