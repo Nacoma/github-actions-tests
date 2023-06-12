@@ -2,11 +2,16 @@ version: '3.7'
 
 services:
   app:
-    image: 121952031047.dkr.ecr.us-east-1.amazonaws.com/deploy-test:beta-25
+    image: www
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
     container_name: app
     hostname: test-app
     environment:
       APP_KEY: "base64:YS/ok7lBEiTQhUvUMSYSsRev5YssnMOwSlwjgRAmqXU="
+    volumes:
+      - .:/app
   proxy:
     image: nginx:alpine
     restart: unless-stopped

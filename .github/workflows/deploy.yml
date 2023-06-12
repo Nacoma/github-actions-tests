@@ -56,15 +56,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: ./.github/actions/install-composer-deps
-      - uses: ./.github/actions/install-npm-deps
-      - uses: ./.github/actions/build-assets
-
-      - name: Get application version
-        id: version
-        run: echo "version=${{ github.run_number }}" >> $GITHUB_OUTPUT
-        shell: sh
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -75,6 +66,11 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Get application version
+        id: version
+        run: echo "version=${{ github.run_number }}" >> $GITHUB_OUTPUT
+        shell: sh
+
       - name: Get Container Url
         id: get-container-url
         env:
@@ -82,6 +78,10 @@ jobs:
           REPOSITORY: deploy-test
           IMAGE_TAG:  ${{ needs.environment.outputs.name }}-${{ steps.version.outputs.version }}
         run: echo "container=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - uses: ./.github/actions/install-composer-deps
+      - uses: ./.github/actions/install-npm-deps
+      - uses: ./.github/actions/build-assets
 
       - uses: ./.github/actions/build-eb-release-candidate
         with:
@@ -94,7 +94,10 @@ jobs:
           REPOSITORY: deploy-test
           IMAGE_TAG:  ${{ needs.environment.outputs.name }}-${{ steps.version.outputs.version }}
         run: |
-          docker build --build-arg APP_VERSION=${{ steps.version.outputs.version}} -t ${{ steps.get-container-url.outputs.container }} .
+          docker build \
+            --build-arg APP_VERSION=${{ steps.version.outputs.version}} \
+            -t ${{ steps.get-container-url.outputs.container }} \
+            ./deploy/production/
           docker push ${{ steps.get-container-url.outputs.container }}
 
       - name: Deploy!

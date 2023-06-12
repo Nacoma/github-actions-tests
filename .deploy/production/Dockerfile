@@ -8,3 +8,4 @@ COPY .deploy/production/php/php-fpm.conf /usr/local/etc/php-fpm.d/zzz-php-fpm.co
 
 ADD --chown=www-data:www-data . /app
 
+ENTRYPOINT ["entrypoint"]

@@ -13,7 +13,7 @@ runs:
   steps:
     - name: php
       id: php
-      uses: docker://nanacoma/php-test:6.0.1
+      uses: docker://121952031047.dkr.ecr.us-east-1.amazonaws.com/800-php:8.2-fpm
       with:
         entrypoint: ${{ inputs.command }}
         args: ${{ inputs.args }}
