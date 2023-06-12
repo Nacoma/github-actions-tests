@@ -106,3 +106,4 @@ jobs:
           environment_name: Deploy-test-env
           version_label: ${{ steps.version.outputs.version }}
           deployment_package: target/www-${{ steps.version.outputs.version }}.zip
+          region: us-east-1
