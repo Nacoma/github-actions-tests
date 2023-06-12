@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return config('app.version');
+    return 'Version: ' . config('app.version', 'MISSING');
 });
