@@ -17,7 +17,7 @@ runs:
       id: restore-php-image
       uses: actions/cache@v3
       with:
-        path: ci/cache/docker/800-php
+        path: .deploy/cache/docker/php
         key: cache-php-container-${{ hashFiles('./deploy/production/Dockerfile') }}
 
     - name: Fetch PHP Image
@@ -25,10 +25,11 @@ runs:
       if: steps.restore-php-image.outputs.cache-hit != 'true'
       run: |
         docker pull 121952031047.dkr.ecr.us-east-1.amazonaws.com/800-php:8.2-fpm
-        docker image save 121952031047.dkr.ecr.us-east-1.amazonaws.com/800-php:8.2-fpm --output .deploy/cache/800-php.tar
+        mkdir -p .deploy/cache/docker/php
+        docker image save 121952031047.dkr.ecr.us-east-1.amazonaws.com/800-php:8.2-fpm --output .deploy/cache/docker/php/800-php.tar
       shell: bash
 
     - name: Load PHP Image
       id: load-php-image
-      run: docker image load --input .deploy/cache/800-php.tar
+      run: docker image load --input .deploy/cache/docker/php/800-php.tar
       shell: bash
