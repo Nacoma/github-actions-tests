@@ -25,7 +25,9 @@ runs:
       if: steps.restore-php-image.outputs.cache-hit != 'true'
       run: |
         docker pull 121952031047.dkr.ecr.us-east-1.amazonaws.com/800-php:8.2-fpm
+        echo "\n\npulled\n\n"
         mkdir -p ci/cache/docker/php
+        echo "\n\nsaving\n\n"
         docker image save 121952031047.dkr.ecr.us-east-1.amazonaws.com/800-php:8.2-fpm --output ./ci/cache/docker/php/800-php.tar
       shell: bash
 
