@@ -25,11 +25,10 @@ runs:
       if: steps.restore-php-image.outputs.cache-hit != 'true'
       run: |
         docker pull 121952031047.dkr.ecr.us-east-1.amazonaws.com/800-php:8.2-fpm
-        mkdir -p .deploy/cache/docker/
-        docker image save 121952031047.dkr.ecr.us-east-1.amazonaws.com/800-php:8.2-fpm --output .deploy/cache/docker/800-php.tar
+        docker image save 121952031047.dkr.ecr.us-east-1.amazonaws.com/800-php:8.2-fpm --output .deploy/cache/800-php.tar
       shell: bash
 
     - name: Load PHP Image
       id: load-php-image
-      run: docker image load --input .deploy/cache/docker/800-php.tar
+      run: docker image load --input .deploy/cache/800-php.tar
       shell: bash
